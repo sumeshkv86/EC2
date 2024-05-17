@@ -1,7 +1,7 @@
 pipeline {
 
     parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply/destroy after generating plan?')
     } 
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
@@ -13,9 +13,8 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                        dir("terraform")
-                        {
-                            git "https://github.com/yeshwanthlm/Terraform-Jenkins.git"
+                        dir("terraform") {
+                           checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/marcmael1/Terraform-Jenkins.git']])
                         }
                     }
                 }
@@ -46,7 +45,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
+                sh "pwd;cd terraform/ ; terraform destroy -input=false tfplan"
             }
         }
     }
