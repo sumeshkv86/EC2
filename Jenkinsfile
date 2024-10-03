@@ -15,7 +15,7 @@ pipeline {
                  script{
                         dir("terraform")
                         {
-                            git "https://github.com/sumeshkv86/jenkins-terraform.git"
+                            git "https://github.com/sumeshkv86/EC2.git
                         }
                     }
                 }
